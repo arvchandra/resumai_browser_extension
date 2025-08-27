@@ -10,10 +10,6 @@
     "service_worker": "assets/background.js",
     "type": "module"
   },
-  "oauth2": {
-    "client_id": "1044667708228-ir1266nf6l06845308efc0uq5dnmpo84.apps.googleusercontent.com",
-    "scopes": ["openid", "email", "profile"]
-  },
   "host_permissions": ["*://localhost/*"],
   "permissions": ["cookies", "storage", "identity", "scripting", "contextMenus", "tabs"]
 }

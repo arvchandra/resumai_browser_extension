@@ -1,6 +1,8 @@
-import { refreshToken } from "./api/authApi";
+import { refreshAccessTokenAndUserInfo } from "./api/authApi";
 
 import type { User } from "./types/user";
+
+const WEB_APP_DOMAIN = import.meta.env.VITE_WEB_APP_DOMAIN;
 
 function getDomainCookie(domain: string, cookieName: string)
   : Promise<chrome.cookies.Cookie | undefined> {
@@ -12,13 +14,15 @@ function getDomainCookie(domain: string, cookieName: string)
   });
 }
 
+// Refresh accessToken and userInfo using web app refreshToken cookie 
 async function refreshLogin() {
-  const refreshTokenCookie = await getDomainCookie("localhost", "refreshToken");
+  const refreshTokenCookie = await getDomainCookie(WEB_APP_DOMAIN, "refreshToken");
   if (!refreshTokenCookie) return null;
 
-  const response = await refreshToken(refreshTokenCookie.value);
+  const response = await refreshAccessTokenAndUserInfo(refreshTokenCookie.value);
   if (!response.ok) return null;
 
+  // Store accessToken and userInfo in Chrome local storage
   const accessTokenAndUser = await response.json();
   await chrome.storage.local.set({
     accessToken: accessTokenAndUser.accessToken,
@@ -28,23 +32,29 @@ async function refreshLogin() {
   return accessTokenAndUser;
 }
 
+// Chrome extension message handler
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "AUTHENTICATE_USER") {
     (async () => {
       try {
-        const result = await new Promise<{ accessToken?: string }>((resolve) => {
-          chrome.storage.local.get(["accessToken"], (result) => {
-            resolve(result);
+        // Retrieve accessToken and userInfo from Chrome local storage
+        const result = await new Promise<{ accessToken?: string, userInfo?: User }>
+          ((resolve) => {
+            chrome.storage.local.get(["accessToken", "userInfo"], (result) => {
+              resolve(result);
+            });
           });
-        });
 
-        if (result.accessToken) {
+        // If accessToken and userInfo are both available in 
+        // local storage, implicitly authenticate the user. 
+        // NOTE: accessToken may be invalid/expired.
+        if (result.accessToken && result.userInfo) {
           sendResponse({ isAuthenticated: true });
           return;
         }
 
+        // Refresh accessToken and userInfo via web app refreshToken
         const accessTokenAndUser = await refreshLogin();
-
         if (accessTokenAndUser) {
           sendResponse({ isAuthenticated: true });
           return;
@@ -63,6 +73,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   if (message.type === "GET_USER_INFO") {
     (async () => {
+      // Retrieve userInfo from Chrome local storage
       const result = await new Promise<{ userInfo?: User }>((resolve) => {
         chrome.storage.local.get(["userInfo"], (result) => {
           resolve(result);

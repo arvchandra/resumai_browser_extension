@@ -22,7 +22,7 @@ export function logout() {
 // Manually attach refreshToken since this will be a cross-origin request
 // from the browser extension to the web app.
 // credentials: "include" only works for same origin/domain requests.
-export function refreshToken(currentRefreshTokenValue: string) {
+export function refreshAccessTokenAndUserInfo(currentRefreshTokenValue: string) {
   return fetch(`${AUTH_API_BASE_URL}/token/refresh/`, {
     method: "POST",
     headers: {
