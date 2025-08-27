@@ -10,5 +10,6 @@
     "service_worker": "assets/background.js",
     "type": "module"
   },
-  "permissions": ["identity", "scripting", "contextMenus", "tabs"]
+  "host_permissions": ["*://localhost/*"],
+  "permissions": ["cookies", "storage", "identity", "scripting", "contextMenus", "tabs"]
 }
