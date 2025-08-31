@@ -1,0 +1,13 @@
+.layout {
+  align-items: center;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+}

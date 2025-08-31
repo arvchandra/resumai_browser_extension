@@ -1,0 +1,15 @@
+.header {
+  align-items: center;
+  border-bottom: 1px solid #bbb;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
+
+.header-app-title {
+  font-size: 1rem;
+  font-weight: 500;
+}

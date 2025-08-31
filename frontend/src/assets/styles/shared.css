@@ -1,0 +1,70 @@
+/* Base button style */
+.btn {
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.6rem 1.2rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+/* Small button */
+.btn-small {
+  font-size: 0.75rem;
+  padding: 0.4rem 1.8rem;
+}
+
+/* Primary button */
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Cancel button */
+.btn-cancel {
+  background-color: inherit;
+  border: 1px solid #a7a7a7;
+  color: #a7a7a7;
+}
+
+.btn-cancel:hover {
+  border: 1px solid #818181;
+  color: #818181;
+}
+
+/* Disabled button */
+.btn:disabled {
+  background-color: inherit;
+  border: 1px solid #a7a7a7;
+  color: #a7a7a7;
+  cursor: not-allowed;
+}
+
+.btn-action-row {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.icon {
+  cursor: pointer;
+  height: 1rem;
+  width: 1rem;
+}
+
+.menu-icon {
+  height: 0.8rem;
+  width: 0.8rem;
+}
