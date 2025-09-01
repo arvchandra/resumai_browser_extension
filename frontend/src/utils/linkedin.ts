@@ -2,7 +2,6 @@ export function getLinkedInJobUrl(url: string): (string | null) {
   const JOB_POSTING_PATH = "https://www.linkedin.com/jobs/view";
 
   try {
-    console.log(url);
     const parsedUrl = new URL(url);
 
     // Only allow linkedin.com domains
@@ -11,9 +10,6 @@ export function getLinkedInJobUrl(url: string): (string | null) {
     }
 
     const urlPath = parsedUrl.pathname.toLowerCase();
-
-    console.log(parsedUrl);
-    console.log(urlPath);
 
     // Case 1: https://www.linkedin.com/jobs/view/1234567890/
     const jobViewMatch = urlPath.match(/^\/jobs\/view\/\d+/);
