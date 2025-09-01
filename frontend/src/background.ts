@@ -1,4 +1,4 @@
-import { refreshAccessTokenAndUserInfo } from "./api/authApi";
+import * as authApi from "./api/authApi";
 
 import type { User } from "./types/user";
 
@@ -19,7 +19,7 @@ async function refreshLogin() {
   const refreshTokenCookie = await getDomainCookie(WEB_APP_DOMAIN, "refreshToken");
   if (!refreshTokenCookie) return null;
 
-  const response = await refreshAccessTokenAndUserInfo(refreshTokenCookie.value);
+  const response = await authApi.refreshAccessTokenAndUserInfo(refreshTokenCookie.value);
   if (!response.ok) return null;
 
   // Store accessToken and userInfo in Chrome local storage
@@ -65,6 +65,19 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         console.error("Authentication error:", err);
         sendResponse({ isAuthenticated: false, error: String(err) });
       }
+    })();
+
+    // Important: keep message channel open for async sendResponse
+    return true;
+  }
+
+  // Logout removes all items from Chrome local storage
+  // and calls the web server logout endpoint (to delete refresh token)
+  if (message.type === "LOGOUT") {
+    (async () => {
+      await chrome.storage.local.clear();
+      authApi.logout();
+      sendResponse();
     })();
 
     // Important: keep message channel open for async sendResponse
