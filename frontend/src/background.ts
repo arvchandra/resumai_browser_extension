@@ -108,7 +108,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   if (message.type === "GET_LINKED_IN_JOB_URL") {
     (async () => {
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true }); 
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
       if (tab?.url) {
         sendResponse(getLinkedInJobUrl(tab.url));
       }
