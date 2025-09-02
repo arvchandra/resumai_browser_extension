@@ -1,4 +1,5 @@
 import * as authApi from "./api/authApi";
+import { getLinkedInJobUrl } from "./utils/linkedin";
 
 import type { User } from "./types/user";
 
@@ -96,6 +97,20 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       if (result.userInfo) {
         sendResponse(result.userInfo);
         return;
+      }
+
+      return null;
+    })();
+
+    // Important: keep message channel open for async sendResponse
+    return true;
+  }
+
+  if (message.type === "GET_LINKED_IN_JOB_URL") {
+    (async () => {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (tab?.url) {
+        sendResponse(getLinkedInJobUrl(tab.url));
       }
 
       return null;

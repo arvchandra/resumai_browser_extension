@@ -1,19 +1,25 @@
 import { useEffect, useState } from "react";
 
-import type { User } from "../../types/user";
-
 export default function TailorResumesPage() {
-  const [userInfo, setUserInfo] = useState<User | null>(null);
+  const [jobPostingUrl, setJobPostingUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    chrome.runtime.sendMessage({ type: "GET_USER_INFO" }, (userInfo: User) => {
-      setUserInfo(userInfo);
+    chrome.runtime.sendMessage({ type: "GET_LINKED_IN_JOB_URL" }, (linkedInJobUrl) => {
+      setJobPostingUrl(linkedInJobUrl);
     });
-  }, [])
+  }, []);
+
+  const isValidLinkedInJobPosting = jobPostingUrl !== null;
 
   return (
-    <div>
-      Welcome {userInfo?.firstName}!
+    <div className="resume-tailor-form">
+      {isValidLinkedInJobPosting ?
+        (
+          <button className="btn btn-primary">
+            Tailor Resume
+          </button>
+        ) : (<span>Not a LinkedIn job posting page</span>)
+      }
     </div>
   )
 }

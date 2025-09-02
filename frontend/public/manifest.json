@@ -11,5 +11,7 @@
     "type": "module"
   },
   "host_permissions": ["*://localhost/*"],
-  "permissions": ["cookies", "storage", "identity", "scripting", "contextMenus", "tabs"]
+  "permissions": [
+    "cookies", "storage", "identity", "scripting", "contextMenus", "activeTab"
+  ]
 }

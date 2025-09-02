@@ -9,7 +9,6 @@ const ProtectedRoute = () => {
     // Authenticate the user (using either the access or refresh tokens)
     chrome.runtime.sendMessage({ type: "AUTHENTICATE_USER" }, async (response) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log(`isAuthenticated: ${response.isAuthenticated}`);
       if (response.isAuthenticated) {
         setIsAuthenticated(true);
       }

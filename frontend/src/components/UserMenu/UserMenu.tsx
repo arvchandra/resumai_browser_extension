@@ -16,7 +16,6 @@ export default function UserMenu({ userInfo }: UserMenuProps) {
   function handleLogout() {
     // Logout (clears Chrome local storage, removing all stored tokens and user info)
     chrome.runtime.sendMessage({ type: "LOGOUT" }, () => {
-      console.log("logged out");
       setMenuOpen(false);
       window.close();
     });
